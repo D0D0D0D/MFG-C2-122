@@ -1,0 +1,20 @@
+# Runtime parameters — MFG-C2-122
+# Runtime-tunable knobs live here, NOT in agent.yaml (the static AgentRegistry manifest).
+# agent.yaml = static manifest; config.yaml = runtime params.
+
+max_retry: 3
+timeout_s: 30
+deployment_tenant_ref: "single_customer_deployment"
+
+# Checkpointer / memory. HITL is NOT used by this template — human review is expressed
+# via the requires_human_review output flag, not backbone interrupt(). Therefore
+# memory_enabled can stay false (no checkpointer required for pause/resume).
+memory_enabled: false
+
+hitl:
+  enabled: false   # PB-7 auto-waived (non-HITL). See docs/02_design.md Design Decision Record.
+
+# Advisory signal (A-1 decision B-1): non-binding review signal + fixed disclaimer.
+# The disclaimer is a canonical constant — S-3 rejects any output where
+# advisory_disclaimer != advisory_disclaimer_text whenever advisory_signal is present.
+advisory_disclaimer_text: "本シグナルは参考であり、供給者承認・製品出荷・是正措置の有効性の最終判定ではない。最終判定はQA 責任者が行う。"

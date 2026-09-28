@@ -1,0 +1,32 @@
+# Agent Manifest — AgentRegistry entry point
+# AgentRegistry reads these keys at ROOT level. Do not nest them under
+# `agent:` and do not split entrypoint into module/class keys.
+id: "MFG-C2-122"
+name: "Manufacturing Supplier Corrective-Action Evidence Brief Agent"
+namespace: "mfg"
+version: "1.0.0"
+enabled: true
+description: "Creates cited, non-conclusive review briefs for supplier CAPA/8D evidence."
+category: "Cat 2"
+# Static generation contract. Omitted by legacy templates defaults to deterministic.
+# This AG drives its LLM stage through the config["llm"] injection seam (BaseLLM), so the
+# truthful declaration is llm — omitting it would record an LLM template as deterministic.
+generation_mode: "llm"  # deterministic | llm
+industry: "MFG"
+
+# Actual L1 base class — must match the class in src/graph/graph.py
+base_type: "AgentBaseGraph"
+
+# Entry point — single dotted import path (module.Class).
+class: "src.graph.graph.SupplierCorrectiveActionEvidenceBriefAgent"
+
+# Security
+required_trust_level: "VERIFIED_EXTERNAL"
+
+requires:
+  extras: []
+  secrets: []
+
+# NOTE: runtime-tunable parameters (max_retry / timeout_s / hitl.* / memory_enabled)
+# live in config/config.yaml — NOT here. agent.yaml is the static AgentRegistry manifest
+# Do NOT put runtime-tunable parameters in agent.yaml.
